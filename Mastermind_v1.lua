@@ -1,12 +1,15 @@
---------------------[ Heist Editor ]--------------------
+--------------[ Mastermind  Heist Editor ]--------------
 --- Cluckin Bell, KnoWay, Dr Dre, and Oscar Guzman prep skips
 --- Cayo Perico editor
 --- Doomsday Act setter
 ---
+--- v1:
+--- + Renamed to Mastermind
 --- v0:
---- - Created
+--- + Created
 --------------------------------------------------------
-
+local __name = "Mastermind"
+local __version = 1
 --------------------( Basic Module )--------------------
 ---@class HeistInfo
 ---@field public name string
@@ -15,6 +18,7 @@
 
 ---@alias HEIST_TYPES table<integer, HeistInfo>
 
+-- Credits to ImagineNothing for original Cluckin Bell and Dr Dre Skip script and the UC forums for KnoWay and Oscar
 ---@type HEIST_TYPES
 local HEIST_TYPES = {
     {
@@ -34,7 +38,7 @@ local HEIST_TYPES = {
     {
         name = "Dr Dre Contract",
         stat = {
-            name = "MPXstring.formatIXER_STORY_BS",
+            name = "MPX_FIXER_STORY_BS",
             val = 4095,
         }
     },
@@ -287,8 +291,8 @@ local function drawDdayTab()
         ImGui.BeginDisabled(dday_status == act.stat.status)
         if (ImGui.Button(act.name)) then
             stats.set_int("MPX_GANGOPS_HEIST_STATUS", act.stat.status)
-            stats.set_int("MPX_GANGOPSstring.formatLOW_MISSION_PROG", act.stat.flow)
-            stats.set_int("MPX_GANGOPSstring.formatLOW_NOTIFICATIONS", 1557)
+            stats.set_int("MPX_GANGOPS_FLOW_MISSION_PROG", act.stat.flow)
+            stats.set_int("MPX_GANGOPS_FLOW_NOTIFICATIONS", 1557)
         end
         ImGui.EndDisabled()
     end
@@ -299,13 +303,17 @@ end
 
 --------------------( Main  Script )--------------------
 if (type(script["run_in_callback"]) == "function") then
-    local errmsg = "YimMenuV2 is not supported. If you want to run this script in GTA V Enhanced, download YimLuaAPI."
+    local errmsg = "This script is not compatible with YimMenuV2. Please download YimLuaAPI."
     ---@diagnostic disable-next-line: undefined-global
-    notify.error("Heist Editor", errmsg)
+    notify.error(__name, errmsg)
     error(errmsg .. "  https://github.com/TupoyeMenu/YimLuaAPI")
 end
 
-gui.add_tab("Heist Editor")
+local hello_world = "Hello, World! Script Loaded Successfully."
+gui.show_message(__name, hello_world)
+log.info(hello_world)
+
+gui.add_tab(string.format("%s v%d", __name, __version))
     :add_imgui(function()
         local isOnline = NETWORK.NETWORK_IS_SESSION_STARTED() and
             not NETWORK.NETWORK_IS_IN_TRANSITION() and
